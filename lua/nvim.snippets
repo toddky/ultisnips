@@ -1,0 +1,36 @@
+
+# ==============================================================================
+# PACKER
+# ==============================================================================
+snippet use "packer (short)" b
+use '${1:username/plugin}'
+endsnippet
+
+snippet use "packer (long)" b
+use {
+	'${1:username/plugin}'
+	--disable = true
+	setup = function()
+	end
+	config = function()
+	end
+}
+endsnippet
+
+
+# ==============================================================================
+# VIM
+# ==============================================================================
+snippet g "g:variable"
+vim.g.${1:name} = ${2:'value'}
+endsnippet
+
+snippet cmd "vim.cmd" b
+vim.cmd 
+endsnippet
+
+snippet fn "vim.fn"
+vim.fn.${1:something}()
+endsnippet
+
+
