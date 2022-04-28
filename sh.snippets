@@ -77,13 +77,46 @@ snippet args "" b
 # ==============================================================================
 # ARGUMENTS
 # ==============================================================================
+passthrough_args=()
 while [[ "\$1" =~ ^- ]]; do
 #while [[ $# -ge 1 ]]; do
-	arg="\$1"
-	shift
+	arg="\$1" && shift
 	case "$arg" in
+		-i|--input)
+			input="\$1" && shift
+			if [[ -z "$input" ]]; then
+				echo "ERROR: Input not specified."
+				exit 2
+			fi
+			if ! [[ -f "$input" ]]; then
+				echo "ERROR: Input file '$input' not found."
+				exit 2
+			fi
+			;;
+		-o|--output)
+			output="\$1" && shift
+			if [[ -z "$output" ]]; then
+				echo "ERROR: Output not specified."
+				exit 2
+			fi
+			;;
 		-v|--verbose) verbosity=1;;
 		-h|--help) echo "$USAGE"; exit;;
+		*)
+			if [[ -f "$arg" ]]; then
+				# Handle file based on extension
+				ext="$(echo "${arg##*.}")"
+				case "$ext" in
+					log) log_file="$arg";;
+					*)
+						echo "ERROR: Unable to hand file '$arg' with extension '$ext'."
+						exit 2
+					;;
+				esac
+				continue
+			fi
+			passthrough_args+=("$arg")
+		;;
 	esac
 done
 endsnippet
@@ -106,6 +139,14 @@ Options:
 EOF
 )
 endsnippet
+
+snippet 1 "" b
+if [[ -z "\$1" ]]; then
+	echo "\$1 not specified." 1>&2
+	exit 2
+fi
+endsnippet
+
 
 
 # ==============================================================================
