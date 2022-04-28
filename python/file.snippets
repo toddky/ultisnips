@@ -25,6 +25,21 @@ snippet read ""
 open(${1:'/path/to/file'}).read()
 endsnippet
 
+snippet write ""
+open(${1:'/path/to/file'}, 'w').write(string)
+endsnippet
+
+snippet write ""
+def safe_open_w(file):
+	dirname = os.path.dirname(file)
+	if dirname == "":
+		dirname = os.getcwd()
+		file = os.path.join(dirname, file)
+	os.makedirs(dirname, exist_ok=True)
+	return open(file, 'w')
+safe_open_w(${1:'/path/to/file'})
+endsnippet
+
 snippet realpath ""
 os.path.realpath(${1:'/path/to/dir'})
 endsnippet
