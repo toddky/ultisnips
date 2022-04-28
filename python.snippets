@@ -79,7 +79,7 @@ for line in p.stdout.readlines():
 retval = p.wait()
 endsnippet
 
-snippet run ""
+snippet run "Capture stdout, stderr"
 import subprocess
 ${1:command} = ['ls', '-l']
 print(f"=> {' '.join($1)}")
@@ -88,4 +88,13 @@ if result.returncode != 0:
 	exit(result.returncode)
 endsnippet
 
+snippet run "Capture stdout, print stderr"
+from subprocess import Popen, PIPE
+${1:command} = ['ls', '-l']
+process = Popen($1, stdout=PIPE)
+stdout, stderr = process.communicate()
+if process.returncode != 0:
+	exit(result.returncode)
+print(stdout.decode('utf-8'))
+endsnippet
 
